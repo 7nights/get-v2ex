@@ -36,7 +36,7 @@ exports.submitReply = function submitReply(req, res) {
   });
 };
 exports.submitCipher = function submitCipher(req, res) {
-  if (req.query.cipher === +cipher.code) {
+  if (req.query.cipher === cipher.code) {
     // req.session = {
     //   user: cipher.user,
     //   ...req.session

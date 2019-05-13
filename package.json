@@ -11,7 +11,9 @@
     "inquirer": "^6.3.1",
     "sqlite": "^3.0.3",
     "sqlite3": "^4.0.7",
-    "tough-cookie-filestore": "^0.0.1"
+    "tough-cookie-filestore": "^0.0.1",
+    "cryptiles": ">=4.1.2",
+    "tough-cookie": ">=2.3.3"
   },
   "name": "get-v2ex",
   "version": "1.0.0",
@@ -22,6 +24,6 @@
     "init": "node initialize.js"
   },
   "author": "o_o@lrednight.com",
-  "license": "ISC",
+  "license": "BSD-3-Clause",
   "description": ""
 }

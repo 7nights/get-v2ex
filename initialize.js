@@ -56,5 +56,12 @@ Promise.resolve()
       });
   })
   .then(() => {
+    const cookiesPath = path.join(__dirname, 'cookies');
+    return fs.mkdir(cookiesPath).then(() => {}, () => {})
+      .then(() => {
+        return fs.writeFile(path.join(cookiesPath, 'cookies.json'), '');
+      });
+  })
+  .then(() => {
     console.log('👍 Configuration was saved in config.js .');
   });
