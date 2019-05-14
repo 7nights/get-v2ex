@@ -4,6 +4,7 @@ const cors = require('cors')
 const session = require('cookie-session');
 const bodyParser = require('body-parser');
 const controllers = require('./controllers');
+const staticServer = require('./controllers/static');
 const config = require('./config');
 const cluster = require('cluster');
 const path = require('path');
@@ -44,7 +45,8 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
+// static
+app.use('/static', staticServer, express.static('public'));
 
 const whitelist = ['localhost', '127.0.0.1'];
 app.use(cors({

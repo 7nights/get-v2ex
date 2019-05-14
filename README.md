@@ -32,3 +32,28 @@ Go to [Firebase console](https://console.firebase.google.com/u/0/) to add a proj
 
 1. Fill in `serverKeyPath` with the absolute path of the key file.
 2. Fill in `databaseURL`. You can find it in the `Admin SDK configuration snippet` at step 2.
+
+## Configure Nginx
+
+Before configure Nginx, you need to install [bv2ex](https://github.com/7nights/bv2ex) first.
+
+You may use get-v2ex to serve both the RESTFul APIs and static resources of the web application. 
+
+To achieve this, we need to add 2 rules to tell Nginx how it should rewrite the requests. For example, if we configure `clientAddress` as `https://example_domain` in `get-v2ex/public/config.js`, we'll need to rewrite all the client resource requests to add `'/static'` as a prefix. (This is because bv2ex resources are served under the `/static` scope by default.)
+
+So eventually you may add something like the following to `server` section:
+
+```nginx
+index static/index.html;
+
+# configure serverAddress in your config.js as 'https://[your_domain.com]/api'
+location ~ ^/api/(.*) {
+  rewrite ^/api/(.*) /$1 break;
+  proxy_pass http://127.0.0.1:3001;
+}
+# treat other requests as static resources
+location ~ ^/(.*) {
+  rewrite ^/(.*) /static/$1 break;
+  proxy_pass http://127.0.0.1:3001;
+}
+```
