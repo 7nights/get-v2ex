@@ -33,7 +33,11 @@ module.exports = async () => {
         const notificationSentResult = await notificationService.send(config.cipher.user, {
           notification: {
             title: `You got ${notificationCount} unread notification${notificationCount > 1 ? 's' : ''}.`,
-            body: 'Click to check out more details.'
+            body: 'Click to check out more details.',
+            tag: 'notification-count'
+          },
+          data: {
+            url: '/notifications'
           }
         });
         console.log('send notifications: ', notificationSentResult);
