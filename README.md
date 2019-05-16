@@ -16,7 +16,7 @@ npm run init
 
 ## Configure FCM
 
-You can enable FCM to notifiy users when they get new notifications. This need you to configure both the server side and client side. Follow the instruction below to configure your server.
+*(This step is optional.)* You can enable FCM to notifiy users when they get new notifications. This need you to configure both the server side and client side. Follow the instruction below to configure your server.
 
 ### Step 1. Add a project
 
@@ -35,7 +35,7 @@ Go to [Firebase console](https://console.firebase.google.com/u/0/) to add a proj
 
 ## Configure Nginx
 
-Before configure Nginx, you need to install [bv2ex](https://github.com/7nights/bv2ex) first.
+Before you configure Nginx, you need to install [bv2ex](https://github.com/7nights/bv2ex) first.
 
 You may use get-v2ex to serve both the RESTFul APIs and static resources of the web application. 
 
