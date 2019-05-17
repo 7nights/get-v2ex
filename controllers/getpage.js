@@ -288,7 +288,10 @@ function matchNotifications(text) {
       type = 'collected';
     } else if ($0.match(/里回复了你<\/span> &nbsp;/)) {
       type = 'reply';
+    } else if ($0.match(/感谢了你发布/)) {
+      type = 'thanked_topic'
     } else {
+      type = 'unknown';
       console.warn('Unknown notification type: ', $0);
     }
 
