@@ -37,7 +37,7 @@ module.exports = async () => {
           },
           data: {
             url: '/notifications',
-            notificationCount
+            notificationCount: notificationCount + ''
           }
         });
         console.log('send notifications: ', notificationSentResult);
