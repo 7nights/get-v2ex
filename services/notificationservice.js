@@ -14,6 +14,8 @@ exports.send = async (user, params) => {
           if (val.error && val.error.code === 'messaging/registration-token-not-registered') {
             // remove from database
             model.removeDeviceByToken(val.token);
+          } else if (val.error) {
+            console.error(val.error);
           }
         });
       }

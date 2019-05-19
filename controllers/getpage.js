@@ -268,6 +268,9 @@ exports.notifications = (req, response) => {
     .then((res) => {
       let notifications = matchNotifications(res);
       response.json({data: {notifications}, notificationCount: getNotificationCount(res)});
+
+      // reset notification count
+      models.setNotificationCount(req.session.user, 0);
     })
     .catch(commonErrorHandler(response));
 };

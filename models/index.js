@@ -35,6 +35,21 @@ exports.addDeviceToUser = async (user, token) => {
 exports.removeDeviceByToken = async (token) => {
   return database.run(SQL`DELETE FROM notification_devices WHERE token = ${token};`);
 };
+exports.getNotificationCount = async (user) => {
+  return database.get(SQL`SELECT count, time FROM notification_count WHERE user = ${user};`)
+    .then((ret) => {
+      return ret || {};
+    });
+};
+exports.setNotificationCount = async (user, count = 0) => {
+  return database.run(SQL`UPDATE notification_count SET count = ${count}, time = ${Date.now()} WHERE user = ${user};`)
+    .then((ret) => {
+      if (ret.stmt.changes === 0) {
+        return database.run(SQL`INSERT INTO notification_count(user, count, time) VALUES(${user}, ${count}, ${Date.now()})`);
+      }
+      return ret;
+    });
+};
 
 exports.alterFollowing = (user, isFollowing, topic, title = '') => {
   if (isFollowing) {

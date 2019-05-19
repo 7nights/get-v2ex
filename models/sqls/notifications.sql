@@ -11,3 +11,9 @@ CREATE TABLE IF NOT EXISTS `notification_devices` (
   `token` TEXT,
   `user` TEXT -- user name
 );
+
+CREATE TABLE IF NOT EXISTS `notification_count` (
+  `user` TEXT PRIMARY KEY,
+  `count` INTEGER,
+  `time` INTEGER
+);

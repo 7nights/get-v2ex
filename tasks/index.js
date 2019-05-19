@@ -6,6 +6,9 @@ const notificationService = require('../services/notificationservice');
 const models = require('../models');
 const config = require('../config');
 
+// 3 hours
+const SAME_NOTIFICATION_INTERVAL = 1000 * 60 * 60 * 3;
+
 module.exports = async () => {
   // await models.open();
   await tasks.config({
@@ -29,17 +32,29 @@ module.exports = async () => {
       const notificationCount = pageService.getNotificationCount(res);
 
       if (notificationCount && notificationCount > 0) {
-        // TODO: for now only support one user
-        const notificationSentResult = await notificationService.send(config.cipher.user, {
-          notification: {
-            title: `You got ${notificationCount} unread notification${notificationCount > 1 ? 's' : ''}.`,
-            body: 'Click to check out more details.'
+        // get last sent notification count
+        const { count: lastCount, time = 0 } = await models.getNotificationCount(config.cipher.user);
+        // if no new updates, just return
+        if (notificationCount === lastCount && Date.now() - time <= SAME_NOTIFICATION_INTERVAL) {
+          console.log('Notification sending was ignored', notificationCount, lastCount, Date.now(), time);
+          return;
+        }
+
+        const [notificationSentResult] = await Promise.all([notificationService.send(config.cipher.user, {
+          webpush: {
+            notification: {
+              title: `You've got ${notificationCount} unread notification${notificationCount > 1 ? 's' : ''}.`,
+              body: 'Click to check out more details.',
+              tag: 'unread-notification-count',
+              renotify: true,
+              icon: './assets/logo-without-bg.png'
+            }
           },
           data: {
             url: '/notifications',
             notificationCount: notificationCount + ''
           }
-        });
+        }), models.setNotificationCount(config.cipher.user, notificationCount)]);
         console.log('send notifications: ', notificationSentResult);
       }
     }
