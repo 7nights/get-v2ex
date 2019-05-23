@@ -10,9 +10,7 @@ const { GLOBAL_USER_INFO_REG,
   MEMBER_PAGE_POST_REG, NOTIFICATION_REG, REPLIES_REG,
   USER_INFO_BOX_REG, USER_INFO_REG, POST_TITLE_REG,
   POST_INFO_REG, POST_CONTENT_REG, POST_REPLY_REG,
-  REPLY_ACTION_REG, GLOBAL_ONCE_REG } = require('../configs/regs');
-
-const PAGE_COUNT_REG = /class="page_input" autocomplete="off" value="[0-9]*" min="1" max="([0-9]*)"  onkeydown = "if \(event\.keyCode == 13\)/;
+  REPLY_ACTION_REG, GLOBAL_ONCE_REG, PAGE_COUNT_REG } = require('../configs/regs');
 
 const ERROR_CODE = {
   SERVER_ERROR: 2
@@ -256,11 +254,23 @@ exports.member = (req, response) => {
       let widgets = matchWidgets(res);
       let replies = matchReplies(res);
       let bio = matchBio(res);
+      let pageCount = matchPageCount(res);
       let isOnline = !!(res.match(/<strong class="online">ONLINE<\/strong>/));
-      response.json({data: {posts, isOnline, ifPostsHidden, replies, widgets, bio, memberId, isBlocked, blockActionToken: actionToken, ...userInfo}, notificationCount: getNotificationCount(res)});
+      let responseResult = {data: {posts, isOnline, ifPostsHidden, replies, widgets, bio, memberId, isBlocked, blockActionToken: actionToken, ...userInfo}, notificationCount: getNotificationCount(res)};
+      if (pageCount) {
+        responseResult.data.pageInfo = {
+          total: pageCount
+        };
+      } 
+      response.json(responseResult);
     })
     .catch(commonErrorHandler(response));
 };
+
+function matchPageCount(text) {
+  const ret = text.match(PAGE_COUNT_REG);
+  if (ret) return +ret[1];
+}
 
 exports.notifications = (req, response) => {
   const request = req.userRequest;
