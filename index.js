@@ -39,7 +39,9 @@ require('./lib/context').setContext(app);
 app.use(session({
   name: 'session',
   secret: config.sessionSecret,
-  signed: true
+  signed: true,
+  // 3 days
+  maxAge: 1000 * 60 * 60 * 24  * 3
 }));
 
 app.use(bodyParser.urlencoded({ extended: false }));
