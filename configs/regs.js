@@ -19,7 +19,7 @@ module.exports = {
   NODE_REG: /<a href="\/go\/(.*?)" class="item_node">(.*?)<\/a>/g,
   NODES_PAGE_POST_REG: /<div class="cell [\s\S]*?>[ \n]*?<table [\s\S]*?<a href="\/member\/(.*?)"><img .*? src="(.*?)"[\s\S]*?<a href="\/t\/(.*?)">([\s\S]*?)<\/a>[\s\S]*?<a href="\/member\/.*?">[\s\S]*?<\/table>[ \n]*?<\/div>/g,
   MEMBER_PAGE_POST_REG: /<div class="cell [\s\S]*?>[ \n]*?<table [\s\S]*?<a href="\/t\/(.*?)">([\s\S]*?)<\/a>[\s\S]*?<a href="\/member\/(.*?)">[\s\S]*?<\/table>[ \n]*?<\/div>/g,
-  NOTIFICATION_REG: /<div class="cell" id="n_(.*?)"><table[\s\S]*?<a href="\/member\/(.*?)"><img .*? src="(.*?)"[\s\S]*?<a href="\/t\/(.*?)">(.*?)<\/a>[\s\S]*?<span class="snow">(.*?)<\/span>[\s\S]*?<\/td><\/tr><\/table><\/div>/g,
+  NOTIFICATION_REG: /<div class="cell" id="n_(.*?)"><table[\s\S]*?<a href="\/member\/(.*?)"><img .*? src="(.*?)"[\s\S]*?<a href="\/t\/(.*?)">([^<]*?)<\/a>[\s\S]*?<span class="snow">(.*?)<\/span>[\s\S]*?<\/td><\/tr><\/table><\/div>/g,
   REPLIES_REG: /<div class="dock_area">[\s\S]*?<span class="fade">(.*?)<\/span>[ ]?<\/div><span class="gray">回复了 <a href="\/member\/(.*?)">[\s\S]*?<a href="\/go\/(.*?)">(.*?)<\/a>[\s\S]*?<a href="\/t\/(.*?)">(.*?)<\/a>[\s\S]*?<\/table>[\S\s]*?(<div class="reply_content">|<br \/>)(.*?)<\/div>/gm,
   USER_INFO_BOX_REG: /<div id="Main">[\n ]*?<div class="sep20"><\/div>[\n ]*?<div class="box">[\s\S]*?<\/div>[\n ]*?<div class="sep20"><\/div>/,
   USER_INFO_REG: /<table cellpadding="0" cellspacing="0" border="0" width="100%">[\s\S]*?<img .*? src="(.*?)" class="avatar"[\s\S]*?(<span><li class="fa fa-building"><\/li> &nbsp; <strong>.*?<\/strong>|[\s\S]*)[\s\S]*?<span class="gray">V2EX 第 ([0-9]*?) 号会员，加入于 (.*?)[<\n]([\s\S]*?)<\/span>/,
