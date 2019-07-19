@@ -3,6 +3,14 @@ get-v2ex
 
 RESTful APIs for [V2EX](https://www.v2ex.com). This is the back-end of bv2ex web application.
 
+## BV2EX
+
+![bv2ex-1](https://user-images.githubusercontent.com/3193621/61509683-3d907c80-aa22-11e9-8d63-8faa757099e9.png)
+
+![bv2ex-2](https://user-images.githubusercontent.com/3193621/61509707-67e23a00-aa22-11e9-944e-ae2151d88810.png)
+
+[bv2ex](https://github.com/7nights/bv2ex) is a redesigned V2EX web application. Its goal is to provide a better user experience and more useful features with new web technologies.
+
 ## Requirements
 Node.js >= 10.15.3
 
