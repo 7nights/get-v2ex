@@ -9,7 +9,7 @@ RESTful APIs for [V2EX](https://www.v2ex.com). This is the back-end of bv2ex web
 
 ![bv2ex-2](https://user-images.githubusercontent.com/3193621/61509707-67e23a00-aa22-11e9-944e-ae2151d88810.png)
 
-![bv2ex-dark](https://user-images.githubusercontent.com/3193621/63108237-f1047680-bfb8-11e9-8990-d7c561e0c5b7.png)
+![bv2ex-dark](https://user-images.githubusercontent.com/3193621/63108481-87d13300-bfb9-11e9-8a5d-abf66b8b6b96.png)
 
 
 [bv2ex](https://github.com/7nights/bv2ex) is a redesigned V2EX web application. Its goal is to provide a better user experience and more useful features with new web technologies.
