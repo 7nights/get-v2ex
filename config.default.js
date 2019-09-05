@@ -14,5 +14,6 @@ module.exports = {
     // pwa password, 4 numbers. eg. '1234'
     code: '{{pwaCode}}'
   },
-  port: 3001
+  port: 3001,
+  autoUpdate: true
 };
