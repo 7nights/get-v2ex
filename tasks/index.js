@@ -60,7 +60,7 @@ module.exports = async () => {
   });
 
   // check update
-  config.autoUpdate && taskQueue.schedualTask({
+  config.autoUpdate !== false && taskQueue.schedualTask({
     taskId: 'auto-update',
     // 1 day
     interval: 1000 * 60 * 60 * 24,
