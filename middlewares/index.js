@@ -11,7 +11,7 @@ exports.auth = (req, res, next) => {
   }
   
   // extend the session expiration every day
-  req.session._days = Math.floor(Date.now() / (60*60*24e3));
+  req.session.days = Math.floor(Date.now() / (60*60*24e3));
 
   req.userRequest = userRequest.get('default');
   return next();
