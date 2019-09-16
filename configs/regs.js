@@ -11,7 +11,7 @@ module.exports = {
   NOTIFICATION_COUNT_REG: /<a href="\/notifications">([0-9]*?) 条未读提醒<\/a>/,
   HOT_POST_REG: /<div class="cell .*?">[ \n]*?<table [\s\S]*?<a href="\/member\/(.*?)"><img src="(.*?)"[\s\S]*?<a href="\/t\/(.*?)">([\s\S]*?)<\/a>[\s\S]*?<\/table>[ \n]*?<\/div>/g,
   MAIN_POSTS_REG: /<div id="Main">[\s\S]*?<span class="chevron">→<\/span> <a href="\/recent">更多新主题<\/a>[ \n]*?<\/div>[ \n]*?<\/div>/g,
-  MAIN_POST_REG: /<div class="cell item"[\s\S]*?>[ \n]*?<table [\s\S]*?<a href="\/member\/(.*?)"><img .*? src="(.*?)"[\s\S]*?<a href="\/t\/(.*?)">([\s\S]*?)<\/a>[\s\S]*?<a class="node" href="\/go\/(.*?)">(.*?)<\/a>.*?<a href="\/member\/.*?">[\s\S]*?<\/table>[ \n]*?<\/div>/g,
+  MAIN_POST_REG: /<div class="cell item"[\s\S]*?>[ \n]*?<table [\s\S]*?<a href="\/member\/(.*?)"><img .*? src="(.*?)"[\s\S]*?<a href="\/t\/(.*?)".*?>([\s\S]*?)<\/a>[\s\S]*?<a class="node" href="\/go\/(.*?)">(.*?)<\/a>.*?<a href="\/member\/.*?">[\s\S]*?<\/table>[ \n]*?<\/div>/g,
   LAST_REPLY_REG: /<\/strong> &nbsp;•&nbsp; (.*?) &nbsp;•&nbsp; 最后回复来自 <strong><a href="\/member\/(.*?)">/,
   POST_UPCOUNT_REG: /<li class="fa fa-chevron-up"><\/li> &nbsp;([0-9]*?) &nbsp;&nbsp; <\/div>/,
   NODES_REG: /<div class="box">[\n ]*?(<div class="header">.*?)<\/div>[\n ]*?<div class="inner">([\s\S]*?)<\/div>/g,
