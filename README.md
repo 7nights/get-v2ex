@@ -3,6 +3,12 @@ get-v2ex
 
 RESTful APIs for [V2EX](https://www.v2ex.com). This is the back-end of bv2ex web application.
 
+## Changelog
+
+Notice: Recently automatic update function was added. If you checked out the latest code, it is enabled by default. To disable this feature you need to set `autoUpdate` to `false` in `config.js`. 
+
+To update, see `Update` section below.
+
 ## BV2EX
 
 ![bv2ex-1](https://user-images.githubusercontent.com/3193621/61509683-3d907c80-aa22-11e9-8d63-8faa757099e9.png)
@@ -76,4 +82,12 @@ You can use some tools to manage your bv2ex server process such as [pm2](https:/
 ```shell
 npm i -g forever
 forever start index.js
+```
+
+## Update
+
+```shell
+git checkout
+npm i
+forever restart index.js
 ```

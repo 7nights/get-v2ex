@@ -10,14 +10,16 @@
     "firebase-admin": "^7.3.0",
     "formidable": "^1.1.1",
     "inquirer": "^6.3.1",
+    "node-unzip-2": "^0.2.8",
     "request": "^2.88.0",
+    "semver": "^6.3.0",
     "sqlite": "^3.0.3",
     "sqlite3": "^4.0.7",
     "tough-cookie": ">=2.3.3",
     "tough-cookie-filestore": "^0.0.1"
   },
   "name": "get-v2ex",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
