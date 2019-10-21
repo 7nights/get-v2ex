@@ -6,7 +6,7 @@ module.exports = {
   // is user signed in
   LOGON_REG: /confirm\('确定要从 V2EX 登出？'\)/,
   CAPTCHA_REG: /<input type="text" class="sl" name="(.*?)" value="" autocorrect="off" spellcheck="false" autocapitalize="off" placeholder="请输入上图中的验证码" \/>/,
-  GLOBAL_USER_INFO_REG: /<div class="box">[ \n]*<div class="cell">[ \n]*<table cellpadding="0" cellspacing="0" border="0" width="100%">[ \n]*<tr>[ \n]*<td width="48" valign="top"><a href="\/member\/(.*?)"><img .*?src="(.*?)" class="avatar" border="0" align="default" style="max-width: 48px; max-height: 48px;" \/><\/a><\/td>[\s\S]*?<span class="fade">(.*?)<\/span>[ \n]*<\/td>[ \n]*<\/tr>[ \n]*<\/table>[ \n]*<div class="sep10"><\/div>/,
+  GLOBAL_USER_INFO_REG: /<div class="box">[ \n]*<div class="cell">[ \n]*<table cellpadding="0" cellspacing="0" border="0" width="100%">[ \n]*<tr>[ \n]*<td width="48" valign="top"><a href="\/member\/(.*?)"><img .*?src="(.*?)" class="avatar" border="0" align="default" style="max-width: 48px; max-height: 48px;" \/><\/a><\/td>[\s\S]*?(?:<span class="fade">(.*?)<\/span>)?[ \n]*<\/td>[ \n]*<\/tr>[ \n]*<\/table>[ \n]*<div class="sep10"><\/div>/,
   HOT_POSTS_REG: /<div class="box" id="TopicsHot">[\s\S]*?(<div class="cell .*?">([\s\S]*?)<\/table>[ \n]*?<\/div>[ \n]*)+[\s\S]*?<\/div>/g,
   NOTIFICATION_COUNT_REG: /<a href="\/notifications">([0-9]*?) 条未读提醒<\/a>/,
   HOT_POST_REG: /<div class="cell .*?">[ \n]*?<table [\s\S]*?<a href="\/member\/(.*?)"><img src="(.*?)"[\s\S]*?<a href="\/t\/(.*?)".*?>([\s\S]*?)<\/a>[\s\S]*?<\/table>[ \n]*?<\/div>/g,
