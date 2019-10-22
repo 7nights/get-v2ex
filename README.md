@@ -56,7 +56,7 @@ Before you configure Nginx, you need to install [bv2ex](https://github.com/7nigh
 
 You may use get-v2ex to serve both the RESTFul APIs and static resources of the web application. 
 
-To achieve this, we need to add 2 rules to tell Nginx how it should rewrite the requests. For example, if we configure `clientAddress` as `https://example_domain` in `get-v2ex/public/config.js`, we'll need to rewrite all the client resource requests to add `'/static'` as a prefix. (This is because bv2ex resources are served under the `/static` scope by default.)
+To achieve this, we need to add 2 rules to tell Nginx how it should rewrite requests. For example, if we configure `clientAddress` as `https://example_domain` in `get-v2ex/public/config.js`, we'll need to rewrite all the client resource requests to add `'/static'` as a prefix. (This is because bv2ex resources are served under the `/static` scope by default.)
 
 So eventually you may add something like the following to `server` section:
 
@@ -87,7 +87,7 @@ forever start index.js
 ## Update
 
 ```shell
-git checkout
+git pull
 npm i
 forever restart index.js
 ```
