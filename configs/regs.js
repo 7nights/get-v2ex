@@ -28,5 +28,6 @@ module.exports = {
   POST_CONTENT_REG: /<div class="topic_content">[\s\S]*?<div class="topic_buttons">/,
   POST_REPLY_REG: /<div id="r_([0-9]*?)"[\s\S]*?<td width="48" valign="top" align="center"><img .*?src="(.*?)" class="avatar"[\s\S]*?<span class="no">([0-9]*?)<\/span><\/div>[\n ]*?<div class="sep3"><\/div>[\n ]*?<strong><a href="\/member\/(.*?)"(.*?)<span class="ago">(.*?)<\/span>(.*?)[\n ]*?<div class="sep5"><\/div>[\n ]*?<div class="reply_content">([\s\S]*?)<\/div>[\n ]*?<\/td>/g,
   REPLY_ACTION_REG: /<textarea name="content" maxlength="10000" class="mll" id="reply_content"><\/textarea>[ \n]*<div class="sep10"><\/div>[ \n]*<div class="fr"><div class="sep5"><\/div><span class="gray">请尽量让自己的回复能够对别人有帮助<\/span><\/div>[ \n]*<input type="hidden" value="(.*?)" name="once" \/>/,
-  PAGE_COUNT_REG: /class="page_input" autocomplete="off" value="\d*" min="1" max="(\d*)"/
+  PAGE_COUNT_REG: /class="page_input" autocomplete="off" value="\d*" min="1" max="(\d*)"/,
+  CREATE_TOPIC_PROBLEM: /<div class="problem">(.*?)<\/div>/
 };

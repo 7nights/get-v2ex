@@ -5,6 +5,7 @@ const userRequest = require('../lib/userrequest');
 const cipher = require('../config').cipher;
 const models = require('../models');
 const { p2a } = require('../lib/utils');
+const { CREATE_TOPIC_PROBLEM } = require('../configs/regs');
 
 exports.submitReply = function submitReply(req, res) {
   if (!req.body) return res.sendStatus(400);
@@ -122,7 +123,18 @@ exports.createTopic = function createTopic(req, res) {
           throw err;
         }
         if (!response.headers.location) {
-          throw new Error('Failed to create topic');
+          // find problems
+          const problems = body.match(CREATE_TOPIC_PROBLEM);
+          if (problems) {
+            return res.json({
+              error: 'Failed to create topic',
+              data: problems[1]
+            });
+          } else {
+            return res.json({
+              error: 'Failed to create topic'
+            });
+          }
         }
         return res.json({
           data: response.headers.location
