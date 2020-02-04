@@ -76,10 +76,10 @@ exports.uncollectPost = function uncollectPost(req, res) {
   alterPostStatus(req, res, 'topic', 'unfavorite', true);
 }
 exports.likePost = function likePost(req, res) {
-  alterPostStatus(req, res, 'topic', 'thank', false, 'POST');
+  alterPostStatus(req, res, 'topic', 'thank', false, 'POST', 'once');
 }
 exports.likeComment = function likeComment(req, res) {
-  alterPostStatus(req, res, 'reply', 'thank', false, 'POST');
+  alterPostStatus(req, res, 'reply', 'thank', false, 'POST', 'once');
 };
 
 function parseBody(req) {
@@ -183,11 +183,11 @@ exports.alterFollowing = async function alterFollowing(req, res) {
   res.json({ data: null, success: true});
 }
 
-function alterPostStatus(req, res, target, type, refreshPage = false, method = 'GET') {
+function alterPostStatus(req, res, target, type, refreshPage = false, method = 'GET', tokenName = 't') {
   if (!req.query.t || !req.query.action) return res.json({error: {message: 'Invalid input'}});
 
   let t = normalizeTopic(req.query.t);
-  req.userRequest(`https://www.v2ex.com/${type}/${target}/${t}?t=${req.query.action}`, {
+  req.userRequest(`https://www.v2ex.com/${type}/${target}/${t}?${tokenName}=${req.query.action}`, {
     method: method,
     ...(refreshPage ? {headers: {
       referer: 'https://www.v2ex.com/t/' + t
@@ -207,7 +207,14 @@ function alterPostStatus(req, res, target, type, refreshPage = false, method = '
       return res.json({data: {post}, success: true});
     }
 
-    return res.json({data: null, success: true});
+    let result;
+    try {
+      result = JSON.parse(body).success;
+    } catch (ex) {
+      console.error(ex);
+    }
+
+    return res.json({data: null, success: result !== false});
   });
 }
 
