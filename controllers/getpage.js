@@ -10,7 +10,7 @@ const { GLOBAL_USER_INFO_REG,
   MEMBER_PAGE_POST_REG, NOTIFICATION_REG, REPLIES_REG,
   USER_INFO_BOX_REG, USER_INFO_REG, POST_TITLE_REG,
   POST_INFO_REG, POST_CONTENT_REG, POST_REPLY_REG,
-  REPLY_ACTION_REG, GLOBAL_ONCE_REG, PAGE_COUNT_REG } = require('../configs/regs');
+  REPLY_ACTION_REG, GLOBAL_ONCE_REG, PAGE_COUNT_REG, POST_REPLY_COUNT_REG, POST_REPLY_LIKES_COUNT_REG } = require('../configs/regs');
 
 const ERROR_CODE = {
   SERVER_ERROR: 2
@@ -562,7 +562,7 @@ function matchPost(text) {
   let replies = [];
   text.replace(POST_REPLY_REG, ($0, id, avatar, floor, member, $3, time, likes, content) => {
     if (likes) {
-      likes = likes.match(/<span class="small fade">♥ (.*?)<\/span>/);
+      likes = likes.match(POST_REPLY_LIKES_COUNT_REG);
       if (likes) {
         likes = +likes[1];
       } else {
@@ -586,8 +586,7 @@ function matchPost(text) {
   }
 
   // reply count
-  const REPLY_COUNT_REG = /<span class="gray">(.*?) 回复 &nbsp;<strong class="snow">|<\/strong> &nbsp;直到/;
-  let replyCount = text.match(REPLY_COUNT_REG);
+  let replyCount = text.match(POST_REPLY_COUNT_REG);
   if (replyCount) {
     replyCount = +replyCount[1];
   } else {

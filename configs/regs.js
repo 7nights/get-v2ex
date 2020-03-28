@@ -10,7 +10,7 @@ module.exports = {
   HOT_POSTS_REG: /<div class="box" id="TopicsHot">[\s\S]*?(<div class="cell .*?">([\s\S]*?)<\/table>[ \n]*?<\/div>[ \n]*)+[\s\S]*?<\/div>/g,
   NOTIFICATION_COUNT_REG: /<a href="\/notifications">([0-9]*?) 条未读提醒<\/a>/,
   HOT_POST_REG: /<div class="cell .*?">[ \n]*?<table [\s\S]*?<a href="\/member\/(.*?)"><img src="(.*?)"[\s\S]*?<a href="\/t\/(.*?)".*?>([\s\S]*?)<\/a>[\s\S]*?<\/table>[ \n]*?<\/div>/g,
-  MAIN_POSTS_REG: /<div id="Main">[\s\S]*?<span class="chevron">→<\/span> <a href="\/recent">更多新主题<\/a>[ \n]*?<\/div>[ \n]*?<\/div>/g,
+  MAIN_POSTS_REG: /<div id="Main">[\s\S]*?<a href="\/recent">更多新主题<\/a>[ \n]*?<\/div>[ \n]*?<\/div>/g,
   MAIN_POST_REG: /<div class="cell item"[\s\S]*?>[ \n]*?<table [\s\S]*?<a href="\/member\/(.*?)"><img .*?src="(.*?)"[\s\S]*?<a href="\/t\/(.*?)".*?>([\s\S]*?)<\/a>[\s\S]*?<a class="node" href="\/go\/(.*?)">(.*?)<\/a>.*?<a href="\/member\/.*?">[\s\S]*?<\/table>[ \n]*?<\/div>/g,
   LAST_REPLY_REG: /<\/strong> &nbsp;•&nbsp; (.*?) &nbsp;•&nbsp; 最后回复来自 <strong><a href="\/member\/(.*?)">/,
   POST_UPCOUNT_REG: /<li class="fa fa-chevron-up"><\/li> &nbsp;([0-9]*?) &nbsp;&nbsp; <\/div>/,
@@ -27,6 +27,8 @@ module.exports = {
   POST_INFO_REG: /<a href="javascript:" onclick="upVoteTopic\((.*?)\);" class="vote"><li class="fa fa-chevron-up"><\/li>(.*?)<\/a> &nbsp;<a href="javascript:" onclick="downVoteTopic\((.*?)\);" class="vote"><li class="fa fa-chevron-down"><\/li><\/a><\/div> &nbsp; <small class="gray"><a href="\/member\/(.*?)">(.*?)<\/a> · (.*?) · (.*?) 次点击 &nbsp; <\/small>/,
   POST_CONTENT_REG: /<div class="topic_content">[\s\S]*?<div class="topic_buttons">/,
   POST_REPLY_REG: /<div id="r_([0-9]*?)"[\s\S]*?<td width="48" valign="top" align="center"><img .*?src="(.*?)" class="avatar"[\s\S]*?<span class="no">([0-9]*?)<\/span><\/div>[\n ]*?<div class="sep3"><\/div>[\n ]*?<strong><a href="\/member\/(.*?)"(.*?)<span class="ago">(.*?)<\/span>(.*?)[\n ]*?<div class="sep5"><\/div>[\n ]*?<div class="reply_content">([\s\S]*?)<\/div>[\n ]*?<\/td>/g,
+  POST_REPLY_COUNT_REG: /<span class="gray">(.*?) 条回复 &nbsp;<strong class="snow">/,
+  POST_REPLY_LIKES_COUNT_REG: /<span class="small fade"><img.*?alt="❤️" \/> (.*?)<\/span>/,
   REPLY_ACTION_REG: /<textarea name="content" maxlength="10000" class="mll" id="reply_content"><\/textarea>[ \n]*<div class="sep10"><\/div>[ \n]*<div class="fr"><div class="sep5"><\/div><span class="gray">请尽量让自己的回复能够对别人有帮助<\/span><\/div>[ \n]*<input type="hidden" value="(.*?)" name="once" \/>/,
   PAGE_COUNT_REG: /class="page_input" autocomplete="off" value="\d*" min="1" max="(\d*)"/,
   CREATE_TOPIC_PROBLEM: /<div class="problem">(.*?)<\/div>/
