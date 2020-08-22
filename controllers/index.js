@@ -2,6 +2,7 @@ const getpage = require('./getpage');
 const actions = require('./actions');
 const misc = require('./misc');
 const {auth} = require('../middlewares');
+const config = require('../config');
 
 module.exports = (app) => {
   app.get('/recent', auth, getpage.recent);
@@ -17,6 +18,7 @@ module.exports = (app) => {
   app.get('/collected', auth, getpage.collected);
   app.get('/cipher', actions.submitCipher);
   app.get('/addToken', auth, actions.addToken);
+  app.get('/today', auth, getpage.today);
   
   app.post('/reply', auth, actions.submitReply);
   app.post('/createTopic', auth, actions.createTopic);
@@ -25,6 +27,10 @@ module.exports = (app) => {
   app.post('/likePost', auth, actions.likePost);
   app.post('/likeComment', auth, actions.likeComment);
   app.post('/alterFollowing', auth, actions.alterFollowing);
+
+  if (config.enableDebugMode) {
+    app.get('/triggerUpdate', auth, actions.checkUpdate);
+  }
 
   app.get('/getHeaders', auth, (req, res) => {
     console.log(req.headers);

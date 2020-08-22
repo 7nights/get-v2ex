@@ -2,8 +2,8 @@ const sqlite = require('sqlite');
 const fs = require('fs').promises;
 const path = require('path');
 const SQL = require('sql-template-strings');
+const config = require('../config');
 
-const USER_SCHEMA_VERSION = 0;
 let database;
 
 exports.open = async () => {
@@ -61,4 +61,38 @@ exports.alterFollowing = (user, isFollowing, topic, title = '') => {
 exports.isFollowing = (user, topic) => {
   return database.get(SQL`SELECT 1 FROM following_posts WHERE user = ${user} AND topic = ${topic};`)
     .then(ret => !!ret);
+};
+
+// today
+exports.getDays = function getDays(d = new Date) {
+  return parseInt((d.getTime() / 1000 - d.getTimezoneOffset() * 60 - config.popularTodayUpdateTimeInSeconds) / (60 * 60 * 24), 10);
+};
+exports.updateTodayList = (list, daysSinceUnixEpoch = exports.getDays()) => {
+  if (typeof list !== 'string' && !(list instanceof String)) list = JSON.stringify(list);
+  return database.run(SQL`REPLACE INTO today_list(date, list) VALUES(${daysSinceUnixEpoch}, ${list})`);
+};
+exports.getTodayList = (daysSinceUnixEpoch = exports.getDays()) => {
+  return database.get(SQL`SELECT * FROM today_list WHERE date = ${daysSinceUnixEpoch};`)
+    .then((ret) => {
+      if (!ret) return [];
+      return JSON.parse(ret.list);
+    });
+};
+exports.savePost = ({topic, author, title, contentJSON, replyCount}) => {
+  return database.run(SQL`REPLACE INTO today_post(topic, author, title, content_json, reply_count, updated) VALUES(${topic}, ${author}, ${title}, ${contentJSON}, ${replyCount}, ${parseInt(Date.now() / 1000, 10)})`);
+};
+exports.getTodayPosts = async (daysSinceUnixEpoch = exports.getDays()) => {
+  // get posts list
+  const list = await exports.getTodayList(daysSinceUnixEpoch);
+  if (!list || list.length === 0) return [];
+
+  let query = SQL`SELECT * FROM today_post WHERE topic IN (`;
+  list.forEach((id, i) => {
+    query.append(SQL`${id}`);
+    if (i !== list.length - 1) query.append(',');
+  });
+  query.append(')');
+
+  return database.all(query)
+    .then((ret) => [ret, daysSinceUnixEpoch]);
 };

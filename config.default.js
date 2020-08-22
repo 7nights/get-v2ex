@@ -15,5 +15,9 @@ module.exports = {
     code: '{{pwaCode}}'
   },
   port: 3001,
-  autoUpdate: true
+  autoUpdate: true,
+  enableDebugMode: false,
+  // seconds since 00:00:00
+  popularTodayUpdateTimeInSeconds: 60 * 60 * 17
 };
+

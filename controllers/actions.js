@@ -6,6 +6,7 @@ const cipher = require('../config').cipher;
 const models = require('../models');
 const { p2a } = require('../lib/utils');
 const { CREATE_TOPIC_PROBLEM } = require('../configs/regs');
+const autoUpdate = require('../services/autoupdate');
 
 exports.submitReply = function submitReply(req, res) {
   if (!req.body) return res.sendStatus(400);
@@ -163,7 +164,7 @@ function alterBlockStatus(req, res, state) {
     headers: {
       referer: `https://www.v2ex.com/member/${req.query.memberName}`
     }
-  }, (err, response, body) => {
+  }, (err) => {
     if (err) {
       return res.json({error: err});
     }
@@ -178,7 +179,7 @@ exports.alterFollowing = async function alterFollowing(req, res) {
     return res.json({error: 'Invalid params'});
   }
 
-  const [err, ret] = await p2a(models.alterFollowing(req.session.user, following === 'true', normalizeTopic(topic), title));
+  const [err] = await p2a(models.alterFollowing(req.session.user, following === 'true', normalizeTopic(topic), title));
   if (err) {console.error(err);}
   res.json({ data: null, success: true});
 }
@@ -264,6 +265,13 @@ function sendLoginRequest(request, {userField, passwordField, once, captcha, use
       });
   });
 }
+
+exports.checkUpdate = function checkUpdate(req, res) {
+  autoUpdate.checkAndUpdate();
+  res.json({
+    data: null, success: true
+  });
+};
 
 exports.login = function login(req, res) {
   let captcha = req.query.captcha;

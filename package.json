@@ -11,17 +11,22 @@
     "formidable": "^1.1.1",
     "inquirer": "^6.3.1",
     "node-unzip-2": "^0.2.8",
+    "priorityqueue": "^1.0.0",
     "request": "^2.88.0",
     "semver": "^6.3.0",
     "sqlite": "^3.0.3",
-    "sqlite3": "^4.0.7",
+    "sqlite3": "^4.2.0",
     "tough-cookie": ">=2.3.3",
     "tough-cookie-filestore": "^0.0.1"
   },
   "name": "get-v2ex",
   "version": "1.1.0",
   "main": "index.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^7.6.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-node": "^4.1.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "init": "node initialize.js"
