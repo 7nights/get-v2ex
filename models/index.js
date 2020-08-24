@@ -65,7 +65,7 @@ exports.isFollowing = (user, topic) => {
 
 // today
 exports.getDays = function getDays(d = new Date) {
-  return parseInt((d.getTime() / 1000 - d.getTimezoneOffset() * 60 - config.popularTodayUpdateTimeInSeconds) / (60 * 60 * 24), 10);
+  return parseInt((d.getTime() / 1000 - d.getTimezoneOffset() * 60 - (config.popularTodayUpdateTimeInSeconds || 61200)) / (60 * 60 * 24), 10);
 };
 exports.updateTodayList = (list, daysSinceUnixEpoch = exports.getDays()) => {
   if (typeof list !== 'string' && !(list instanceof String)) list = JSON.stringify(list);

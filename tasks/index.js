@@ -83,7 +83,7 @@ module.exports = async () => {
     // repeat every 24 hours
     const d = new Date();
     d.setDate(d.getDate() + 1);
-    d.setHours(parseInt(config.popularTodayUpdateTimeInSeconds / 60 / 60, 10) || 0);
+    d.setHours(parseInt((config.popularTodayUpdateTimeInSeconds || 61200) / 60 / 60, 10) || 0);
     d.setMinutes(0);
     taskQueue.schedualTask({
       taskId: 'fetch-today-list',
