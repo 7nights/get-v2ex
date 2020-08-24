@@ -2,6 +2,7 @@ const tasks = require('../lib/taskrunner');
 const taskQueue = new (require('../lib/taskrunner/memoryqueue'));
 const userRequests = require('../lib/userrequest');
 const pageService = require('../services/pageservice');
+const todayService = require('../services/todayservice');
 const notificationService = require('../services/notificationservice');
 const models = require('../models');
 const config = require('../config');
@@ -69,7 +70,26 @@ module.exports = async () => {
   taskQueue.onRun('auto-update', () => {
     autoUpdate.checkAndUpdate();
   });
-  
+
+  // fetch today list on every start-up
+  taskQueue.schedualTask({
+    taskId: 'fetch-today-list',
+    next: Date.now()
+  });
+  taskQueue.onRun('fetch-today-list', async () => {
+    await todayService.getTodayList(void 0, true);
+    await todayService.fetchPendingTodayPosts();
+
+    // repeat every 24 hours
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    d.setHours(parseInt((config.popularTodayUpdateTimeInSeconds || 61200) / 60 / 60, 10) || 0);
+    d.setMinutes(0);
+    taskQueue.schedualTask({
+      taskId: 'fetch-today-list',
+      next: d.setSeconds(0)
+    });
+  });
 };
 
 module.exports();

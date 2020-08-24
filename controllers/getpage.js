@@ -1,50 +1,11 @@
-const fs = require('fs');
-const BalanceGroup = require('../lib/balancegroup');
-const { fetchPage: getPageSource, getNotificationCount } = require('../services/pageservice');
+const { fetchPage: getPageSource, getNotificationCount, getTodayList, getTopicDetail, PAGES } = require('../services/pageservice');
 const models = require('../models');
 
-const { GLOBAL_USER_INFO_REG,
-  HOT_POSTS_REG, HOT_POST_REG, MAIN_POSTS_REG,
+const { GLOBAL_USER_INFO_REG, MAIN_POSTS_REG,
   MAIN_POST_REG, LAST_REPLY_REG,POST_UPCOUNT_REG,
   NODES_REG, NODE_HEADER_REG, NODE_REG, NODES_PAGE_POST_REG,
   MEMBER_PAGE_POST_REG, NOTIFICATION_REG, REPLIES_REG,
-  USER_INFO_BOX_REG, USER_INFO_REG, POST_TITLE_REG,
-  POST_INFO_REG, POST_CONTENT_REG, POST_REPLY_REG,
-  REPLY_ACTION_REG, GLOBAL_ONCE_REG, PAGE_COUNT_REG, POST_REPLY_COUNT_REG, POST_REPLY_LIKES_COUNT_REG } = require('../configs/regs');
-
-const ERROR_CODE = {
-  SERVER_ERROR: 2
-};
-
-const PAGES = {
-  HOME: 'https://www.v2ex.com/?tab=all',
-  fRECENT: (page) => {
-    return 'https://www.v2ex.com/recent?p=' + (page || 1);
-  },
-  fCOLLECTED: (page = 1) => `https://www.v2ex.com/my/topics?p=${page}`,
-  fPOST: (t, page = 1) => {
-    t = '' + t;
-    let hash = t.indexOf('#');
-    if (~hash) {
-      t = t.substr(0, hash);
-    }
-    if (page === -1 || page === 0) {
-      return 'https://www.v2ex.com/t/' + t;
-    }
-    return 'https://www.v2ex.com/t/' + t + '?p=' + page;
-  },
-  fNODE: (name = 'android', page = 1) => {
-    return 'https://www.v2ex.com/go/' + name + '?p=' + page;
-  },
-  fMEMBER: (member, type, page = 1) => {
-    return 'https://www.v2ex.com/member/' + member + (type ? '/' + type + '?p=' + page : '');
-  },
-  fNOTIFICATIONS: (page = 1) => {
-    return 'https://www.v2ex.com/notifications?p=' + page;
-  },
-  NODES: 'https://www.v2ex.com/planes',
-  NEVERLAND: 'NEVERLAND'
-};
+  USER_INFO_BOX_REG, USER_INFO_REG, GLOBAL_ONCE_REG, PAGE_COUNT_REG } = require('../configs/regs');
 
 // if (process.argv.length === 3) {
 //   let captcha = process.argv[2];
@@ -84,11 +45,6 @@ function getUserInfo(t) {
 
   return result;
 }
-const handleTopicContent = exports.handleTopicContent = function handleTopicContent(res) {
-  let postResult = matchPost(res);
-  let userInfo = getUserInfo(res);
-  return {...postResult, userInfo};
-};
 function commonErrorHandler(res) {
   return (ex) => {
     console.error(ex);
@@ -108,7 +64,7 @@ exports.topic = (req, response) => {
     .then(([res, isFollowing]) => {
       const queryTime = Date.now() - start;
       start = Date.now();
-      const result = handleTopicContent(res);
+      const result = getTopicDetail(res);
       const regTime = Date.now() - start;
       response.json({...result, isFollowing, performance: {regTime, queryTime}});
     })
@@ -141,21 +97,10 @@ exports.recent = (req, response) => {
 
   getPageSource(request, PAGES.HOME)
     .then((res) => {
-      let hotList = res.match(HOT_POSTS_REG);
-      if (hotList) hotList = hotList[0];
-      let arr = [];
-      hotList.replace(HOT_POST_REG, ($0, $1, $2, $3, $4) => {
-        arr.push({
-          member: $1,
-          avatar: $2,
-          title: $4,
-          t: $3
-        });
-      });
-      hotList = arr;
+      let hotList = getTodayList(res);
       let mainList = res.match(MAIN_POSTS_REG)[0];
 
-      arr = [];
+      const arr = [];
       mainList.replace(MAIN_POST_REG, ($0, member, avatar, t, title, node, nodeName) => {
         let pined = false;
         if (~$0.indexOf('corner_star.png')) {
@@ -181,7 +126,7 @@ exports.recent = (req, response) => {
         arr.push({ member, avatar, t, title, node, nodeName, pined, lastReply, upCount });
       });
       mainList = arr;
-      response.json({data: mainList, notificationCount: getNotificationCount(res), userInfo: getUserInfo(res)});
+      response.json({data: mainList, hotList, notificationCount: getNotificationCount(res), userInfo: getUserInfo(res)});
     })
     .catch(commonErrorHandler(response));
 };
@@ -231,6 +176,20 @@ exports.node = (req, response) => {
       }});
     })
     .catch(commonErrorHandler(response));
+};
+
+exports.today = async (req, response) => {
+  let posts, days;
+  try {
+    [posts, days] = await models.getTodayPosts();
+    console.log(posts);
+  } catch (ex) {
+    return response.json({error: 'Failed to get popular today'});
+  }
+  response.json({
+    data: posts,
+    days
+  });
 };
 
 exports.member = (req, response) => {
@@ -303,14 +262,25 @@ function matchNotifications(text) {
       type = 'reply';
     } else if ($0.match(/感谢了你发布/)) {
       type = 'thanked_topic'
+    } else if ($0.match(/充值/)) {
+      type = 'recharge';
     } else {
       type = 'unknown';
       console.warn('Unknown notification type: ', $0);
     }
 
-    payload = $0.match(/<div class="payload">([\s\S]*?)<\/div><\/td><\/tr><\/table>/);
+    payload = $0.match(/<div class="payload">([\s\S]*?)<\/div>\n<\/td>\n<\/tr>\n<\/table>/);
     if (payload) payload = payload[1];
     else payload = void 0;
+
+    // recharge
+    if (t === '\'balance\'') {
+      t = '';
+    } else {
+      t = t.match(/\/t\/(.*)"/);
+      if (t) t = t[1];
+      else t = '';
+    }
 
     arr.push({id, member, avatar, t, title, time, payload, type});
   });
@@ -446,175 +416,4 @@ function matchRecentPage(text, postReg, mode) {
   });
 
   return arr;
-}
-
-function matchPost(text) {
-  let titleInfo = text.match(POST_TITLE_REG);
-  if (titleInfo) {
-    titleInfo = {
-      avatar: titleInfo[2],
-      node: titleInfo[3],
-      nodeName: titleInfo[4],
-      title: titleInfo[5]
-    };
-  } else {
-    console.error('Cannot match title info!');
-    titleInfo = {};
-  }
-
-  let info = text.match(POST_INFO_REG);
-  if (info) {
-    let upCount = info[2].match(/&nbsp;([0-9]*)/);
-    if (upCount) {
-      upCount = upCount[1];
-    } else {
-      upCount = 0;
-    }
-    info = {
-      t: info[1],
-      author: info[4],
-      time: info[6],
-      clicks: info[7],
-      upCount: upCount
-    };
-  } else {
-    console.error('Cannot match post info!');
-    info = {};
-  }
-
-  const INFO_EXTRA_REG = /<div class="topic_buttons">([\s\S])*?<\/div>[\n ]*?<div class="sep20"><\/div>/;
-  let extraInfo = text.match(INFO_EXTRA_REG)[0];
-  let collects = extraInfo.match(/([0-9]*) 人收藏 &nbsp;/);
-  let likes = extraInfo.match(/([0-9]*) 人感谢 &nbsp;/);
-  let likeAction = extraInfo.match(/thankTopic\((.*?), '(.*?)'\);/);
-  let ignoreAction = extraInfo.match(/'\/ignore\/topic\/(.*?)\?once=(.*?)';/);
-  let collectAction = extraInfo.match(/href="\/favorite\/topic\/(.*?)\?t=(.*?)"/);
-  const liked = !likeAction;
-  const muted = !ignoreAction;
-  const collected = !collectAction;
-  let once;
-  let uncollectAction;
-  if (collected) {
-    uncollectAction = extraInfo.match(/href="\/unfavorite\/topic\/.*?\?t=(.*?)"/);
-    if (uncollectAction) {
-      uncollectAction = uncollectAction[1];
-    } else {
-      uncollectAction = void 0;
-    }
-  }
-  if (collects) {
-    collects = collects[1];
-  } else {
-    collects = 0;
-  }
-  if (likes) {
-    likes = likes[1];
-  } else {
-    likes = 0;
-  }
-  if (likeAction) {
-    likeAction = likeAction[2];
-  } else {
-    likeAction = void 0;
-  }
-  if (ignoreAction) {
-    ignoreAction = ignoreAction[2];
-    once = ignoreAction;
-  } else {
-    ignoreAction = void 0;
-  }
-  if (collectAction) {
-    collectAction = collectAction[2];
-  } else {
-    collectAction = uncollectAction;
-  }
-
-  let content = text.match(POST_CONTENT_REG);
-  let appended = [];
-  if (content) {
-    content = content[0];
-    const b = new BalanceGroup(content, '<div', '</div>', '<div@_$no_@', '</div@_$no_@>');
-    content = b.getBalanceGroup(1);
-    if (content.length > 1) {
-      // handle appended
-      content.slice(1).forEach((val) => {
-        let time = val.match(/<span class="fade">第 ([0-9]*?) 条附言 &nbsp;·&nbsp; (.*?)<\/span>/);
-        if (time) {
-          time = time[2];
-        }
-        const b = new BalanceGroup(val, '<div', '</div>', '<div@_$no_@', '</div@_$no_@>');
-        let content = b._balance.match(/<div@_([0-9]*?)_@ class="topic_content">([\s\S]*?)<\/div@_\1_@>/);
-        if (content && content[2]) {
-          content = content[2];
-        } else {
-          content = null;
-        }
-        appended.push({
-          time,
-          content
-        });
-      });
-    }
-    content = content[0].replace(/<div class="topic_content">([\s\S]*)<\/div>/, '$1');
-  }
-
-  // replies
-  let replies = [];
-  text.replace(POST_REPLY_REG, ($0, id, avatar, floor, member, $3, time, likes, content) => {
-    if (likes) {
-      likes = likes.match(POST_REPLY_LIKES_COUNT_REG);
-      if (likes) {
-        likes = +likes[1];
-      } else {
-        likes = 0;
-      }
-    } else {
-      likes = 0;
-    }
-    const liked = $0.match(/thanked/) !== null;
-    replies.push({
-      avatar, floor, member, time, content, likes, liked, id
-    });
-  });
-  let pageCount = 1;
-  if (replies.length > 0) {
-    const PAGE_COUNT_REG = /<input type="number" class="page_input" autocomplete="off" value="(.*?)" min="1" max="(.*?)"/;
-    let count = text.match(PAGE_COUNT_REG);
-    if (count && count[2]) {
-      pageCount = +count[2];
-    }
-  }
-
-  // reply count
-  let replyCount = text.match(POST_REPLY_COUNT_REG);
-  if (replyCount) {
-    replyCount = +replyCount[1];
-  } else {
-    replyCount = 0;
-  }
-
-  let filterUndefined = (val) => {
-    let obj = {};
-    for (let key in val) {
-      if (val[key] === undefined) continue;
-      obj[key] = val[key];
-    }
-    return obj;
-  }
-
-  // reply submit
-  if (!once) {
-    let _once = text.match(REPLY_ACTION_REG);
-    if (_once) {
-      once = _once[1];
-    }
-  }
-
-  return {content, appended, replies, pageCount, ...titleInfo, ...info, replyCount, likes, collects, liked, muted, collected, csrf: collectAction || likeAction || ignoreAction, actions: filterUndefined({
-    collectAction,
-    ignoreAction,
-    likeAction,
-    once,
-    uncollectAction: uncollectAction
-  })};
 }
