@@ -11,7 +11,7 @@ To update, see `Update` section below.
 
 ## BV2EX
 
-![bv2ex-1](https://user-images.githubusercontent.com/3193621/61509683-3d907c80-aa22-11e9-8d63-8faa757099e9.png)
+![bv2ex-1](https://user-images.githubusercontent.com/3193621/91073907-5c723100-e66e-11ea-8149-74817520e18d.png)
 
 ![bv2ex-2](https://user-images.githubusercontent.com/3193621/61509707-67e23a00-aa22-11e9-944e-ae2151d88810.png)
 
