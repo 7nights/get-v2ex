@@ -24,7 +24,7 @@ exports.fetchTodayList = async (days = models.getDays()) => {
 };
 
 exports.getTodayList = async (days = models.getDays(), addToFetchPending = false) => {
-  let list = await models.getTodayList();
+  let list = await models.getTodayList(days);
   if (!list || list.length === 0) {
     list = await exports.fetchTodayList(days);
   }
