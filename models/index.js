@@ -1,4 +1,5 @@
 const sqlite = require('sqlite');
+const sqlite3 = require('sqlite3');
 const fs = require('fs').promises;
 const path = require('path');
 const SQL = require('sql-template-strings');
@@ -9,7 +10,7 @@ let database;
 exports.open = async () => {
   // prepare db and get all table sqls
   const sqlDirPath = path.join(__dirname, './sqls/');
-  const [ db, dirs ] = await Promise.all([sqlite.open('./database.sqlite'), fs.readdir(sqlDirPath)]);
+  const [ db, dirs ] = await Promise.all([sqlite.open({filename: './database.sqlite', driver: sqlite3.Database}), fs.readdir(sqlDirPath)]);
   const [ dbVersion, ...sqls ] = await Promise.all([db.get('PRAGMA user_version;')].concat(dirs.filter(filePath => ~filePath.indexOf('.sql')).map(filePath => {
     return fs.readFile(path.join(sqlDirPath, filePath), {
       encoding: 'utf-8'

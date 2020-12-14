@@ -14,8 +14,9 @@
     "priorityqueue": "^1.0.0",
     "request": "^2.88.0",
     "semver": "^6.3.0",
-    "sqlite": "^3.0.3",
-    "sqlite3": "^4.2.0",
+    "sql-template-strings": "^2.2.2",
+    "sqlite": "^4.0.18",
+    "sqlite3": "^5.0.0",
     "tough-cookie": ">=2.3.3",
     "tough-cookie-filestore": "^0.0.1"
   },

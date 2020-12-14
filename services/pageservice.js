@@ -314,7 +314,7 @@ function matchPost(text) {
 
   // replies
   let replies = [];
-  text.replace(POST_REPLY_REG, ($0, id, avatar, floor, member, $3, time, likes, content) => {
+  text.replace(POST_REPLY_REG, ($0, id, avatar, floor, member, $3, date, time, likes, content) => {
     if (likes) {
       likes = likes.match(POST_REPLY_LIKES_COUNT_REG);
       if (likes) {
@@ -327,7 +327,7 @@ function matchPost(text) {
     }
     const liked = $0.match(/thanked/) !== null;
     replies.push({
-      avatar, floor, member, time, content, likes, liked, id
+      avatar, floor, member, date, time, content, likes, liked, id
     });
   });
   let pageCount = 1;
