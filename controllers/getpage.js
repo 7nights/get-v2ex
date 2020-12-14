@@ -2,10 +2,10 @@ const { fetchPage: getPageSource, getNotificationCount, getTodayList, getTopicDe
 const models = require('../models');
 
 const { GLOBAL_USER_INFO_REG, MAIN_POSTS_REG,
-  MAIN_POST_REG, LAST_REPLY_REG,POST_UPCOUNT_REG,
+  MAIN_POST_REG, LAST_REPLY_REG, POSTED_TIME_REG, POST_UPCOUNT_REG,
   NODES_REG, NODE_HEADER_REG, NODE_REG, NODES_PAGE_POST_REG,
   MEMBER_PAGE_POST_REG, NOTIFICATION_REG, REPLIES_REG,
-  USER_INFO_BOX_REG, USER_INFO_REG, GLOBAL_ONCE_REG, PAGE_COUNT_REG } = require('../configs/regs');
+  USER_INFO_BOX_REG, USER_INFO_REG, GLOBAL_ONCE_REG, PAGE_COUNT_REG, LAST_REPLY_TIME_AND_DATE_REG } = require('../configs/regs');
 
 // if (process.argv.length === 3) {
 //   let captcha = process.argv[2];
@@ -111,9 +111,21 @@ exports.recent = (req, response) => {
           lastReply = {
             time: lastReply[1],
             user: lastReply[2]
+          };
+          const timeAndDate = lastReply.time.match(LAST_REPLY_TIME_AND_DATE_REG);
+          if (timeAndDate) {
+            lastReply.time = timeAndDate[2];
+            lastReply.date = timeAndDate[1];
           }
         } else {
-          lastReply = undefined;
+          lastReply = $0.match(POSTED_TIME_REG);
+          if (lastReply) {
+            lastReply = {
+              time: lastReply[2]
+            };
+          } else {
+            lastReply = undefined;
+          }
         }
 
         let upCount = $0.match(POST_UPCOUNT_REG);
