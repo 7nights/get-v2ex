@@ -5,7 +5,7 @@ const { GLOBAL_USER_INFO_REG, MAIN_POSTS_REG,
   MAIN_POST_REG, LAST_REPLY_REG, POSTED_TIME_REG, POST_UPCOUNT_REG,
   NODES_REG, NODE_HEADER_REG, NODE_REG, NODES_PAGE_POST_REG,
   MEMBER_PAGE_POST_REG, NOTIFICATION_REG, REPLIES_REG,
-  USER_INFO_BOX_REG, USER_INFO_REG, GLOBAL_ONCE_REG, PAGE_COUNT_REG, LAST_REPLY_TIME_AND_DATE_REG } = require('../configs/regs');
+  USER_INFO_BOX_REG, USER_INFO_REG, GLOBAL_ONCE_REG, PAGE_COUNT_REG, LAST_REPLY_TIME_AND_DATE_REG, TIME_AND_DATE_REG } = require('../configs/regs');
 
 // if (process.argv.length === 3) {
 //   let captcha = process.argv[2];
@@ -309,7 +309,7 @@ function matchBio(text) {
 }
 function matchReplies(text) {
   let arr = [];
-  text.replace(REPLIES_REG, ($0, time, replyTo, node, nodeName, t, title, $1, replyContent) => {
+  text.replace(REPLIES_REG, ($0, date, time, replyTo, node, nodeName, t, title, $1, replyContent) => {
     arr.push({time, replyTo, node, nodeName, t, title, replyContent});
   });
   return arr;
@@ -373,6 +373,19 @@ function matchMemberActions(text) {
   return [ false ];
 }
 
+function getTimeAndDate(str) {
+  const date = str.match(TIME_AND_DATE_REG);
+  if (date) {
+    return {
+      time: date[2],
+      date: date[1]
+    };
+  }
+  return {
+    time: str
+  };
+}
+
 function matchRecentPage(text, postReg, mode) {
   let arr = [];
   // node mode
@@ -398,7 +411,7 @@ function matchRecentPage(text, postReg, mode) {
     let lastReply = $0.match(LAST_REPLY_REG);
     if (lastReply) {
       lastReply = {
-        time: lastReply[1],
+        time: getTimeAndDate(lastReply[1]).time,
         user: lastReply[2]
       }
     } else {

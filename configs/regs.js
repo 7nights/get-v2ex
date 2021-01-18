@@ -22,7 +22,7 @@ module.exports = {
   NODES_PAGE_POST_REG: /<div class="cell [\s\S]*?>[ \n]*?<table [\s\S]*?<a href="\/member\/(.*?)"><img .*?src="(.*?)"[\s\S]*?<a href="\/t\/(.*?)".*?>([\s\S]*?)<\/a>[\s\S]*?<a href="\/member\/.*?">[\s\S]*?<\/table>[ \n]*?<\/div>/g,
   MEMBER_PAGE_POST_REG: /<div class="cell [\s\S]*?>[ \n]*?<table [\s\S]*?<a href="\/t\/(.*?)".*?>([\s\S]*?)<\/a>[\s\S]*?<a href="\/member\/(.*?)">[\s\S]*?<\/table>[ \n]*?<\/div>/g,
   NOTIFICATION_REG: /<div class="cell" id="n_(.*?)">\n<table[\s\S]*?<a href="\/member\/(.*?)"><img .*?src="(.*?)"[\s\S]*?<a href=("\/t\/.*?"|'\/balance')>([^<]*?)<\/a>[\s\S]*?<span class="snow">(.*?)<\/span>[\s\S]*?<\/td>\n<\/tr>\n<\/table>\n<\/div>/g,
-  REPLIES_REG: /<div class="dock_area">[\s\S]*?<span class="fade">(.*?)<\/span>[ ]?<\/div><span class="gray">回复了 <a href="\/member\/(.*?)">[\s\S]*?<a href="\/go\/(.*?)">(.*?)<\/a>[\s\S]*?<a href="\/t\/(.*?)">(.*?)<\/a>[\s\S]*?<\/table>[\S\s]*?(<div class="reply_content">|<br \/>)(.*?)<\/div>/gm,
+  REPLIES_REG: /<div class="dock_area">[\s\S]*?<span class="fade"([^>]*?)>(.*?)<\/span>[ ]?<\/div><span class="gray">回复了 <a href="\/member\/(.*?)">[\s\S]*?<a href="\/go\/(.*?)">(.*?)<\/a>[\s\S]*?<a href="\/t\/(.*?)">(.*?)<\/a>[\s\S]*?<\/table>[\S\s]*?(<div class="reply_content">|<br \/>)(.*?)<\/div>/gm,
   USER_INFO_BOX_REG: /<div id="Main">[\n ]*?<div class="sep20"><\/div>[\n ]*?<div class="box">[\s\S]*?<\/div>[\n ]*?<div class="sep20"><\/div>/,
   USER_INFO_REG: /<table cellpadding="0" cellspacing="0" border="0" width="100%">[\s\S]*?<img .*?src="(.*?)" class="avatar"[\s\S]*?(<span><li class="fa fa-building"><\/li> &nbsp; <strong>.*?<\/strong>|[\s\S]*)[\s\S]*?<span class="gray">V2EX 第 ([0-9]*?) 号会员，加入于 (.*?)[<\n]([\s\S]*?)<\/span>/,
   POST_TITLE_REG: /<div class="header"><div class="fr"><a href="\/member\/(.*?)"><img .*?src="(.*?)" class="avatar" border="0" align="default"[^/>]*?\/><\/a><\/div>[\n ]*?<a href="\/">V2EX<\/a> <span class="chevron">&nbsp;›&nbsp;<\/span> <a href="\/go\/(.*?)">(.*?)<\/a>[\n ]*?<div class="sep10"><\/div>[\n ]*?<h1>([\s\S]*?)<\/h1>/,
@@ -33,5 +33,6 @@ module.exports = {
   POST_REPLY_LIKES_COUNT_REG: /<span class="small fade"><img.*?alt="❤️" \/> (.*?)<\/span>/,
   REPLY_ACTION_REG: /<textarea name="content" maxlength="10000" class="mll" id="reply_content"><\/textarea>[ \n]*<div class="sep10"><\/div>[ \n]*<div class="fr"><div class="sep5"><\/div><span class="gray">请尽量让自己的回复能够对别人有帮助<\/span><\/div>[ \n]*<input type="hidden" value="(.*?)" name="once" \/>/,
   PAGE_COUNT_REG: /class="page_input" autocomplete="off" value="\d*" min="1" max="(\d*)"/,
-  CREATE_TOPIC_PROBLEM: /<div class="problem">(.*?)<\/div>/
+  CREATE_TOPIC_PROBLEM: /<div class="problem">(.*?)<\/div>/,
+  TIME_AND_DATE_REG: /<span title="(.*?)">(.*?)(<\/span>|$)/
 };

@@ -6,9 +6,11 @@ const bodyParser = require('body-parser');
 const controllers = require('./controllers');
 const staticServer = require('./controllers/static');
 const config = require('./config');
-const cluster = require('cluster');
-const path = require('path');
-const utils = require('./lib/utils');
+
+// catch unhandled rejection on Node 15+
+process.on('unhandledRejection', (reason) => {
+  console.log('Unhandled Rejection at:', reason.stack || reason);
+});
 
 try {
   // initialize firebase sdk
@@ -50,7 +52,6 @@ app.use(bodyParser.json());
 // static
 app.use('/static', staticServer, express.static('public'));
 
-const whitelist = ['localhost', '127.0.0.1'];
 app.use(cors({
   credentials: true,
   origin: function (origin, callback) {
@@ -90,3 +91,4 @@ models.open()
       console.log(ex);
     });
   });
+
