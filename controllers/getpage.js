@@ -391,7 +391,8 @@ function matchRecentPage(text, postReg, mode) {
   // node mode
   let overrideNodeName;
   if (mode === 'node') {
-    let nodeName = text.match(/<a href="\/">V2EX<\/a> <span class="chevron">&nbsp;›&nbsp;<\/span> (.*?)\n/);
+    let nodeName = text.match(/<a href="\/">V2EX<\/a> <span class="chevron">&nbsp;›&nbsp;<\/span> (.*?)(\n|<)/);
+    console.log(nodeName[0], nodeName[1]);
     overrideNodeName = nodeName[1];
   }
   text.replace(postReg || MAIN_POST_REG, ($0, member, avatar, t, title, node, nodeName) => {

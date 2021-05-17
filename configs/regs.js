@@ -2,7 +2,7 @@ module.exports = {
   USER_REG: /<input type="text" class="sl" name="(.*?)" value="" autofocus="autofocus" autocorrect="off" spellcheck="false" autocapitalize="off" placeholder="用户名或电子邮箱地址" \/>/,
   PASSWORD_REG: /<input type="password" class="sl" name="(.*?)" value="" autocorrect="off" spellcheck="false" autocapitalize="off" \/>/,
   ONCE_REG: /<input type="hidden" value="(.*?)" name="once" \/>/,
-  GLOBAL_ONCE_REG: /\/signout\?once=(.*?)'; }" class="top">登出<\/a><\/td>/,
+  GLOBAL_ONCE_REG: /\/signout\?once=(.*?)'; }" class="top">登出<\/a>/,
   // is user signed in
   LOGON_REG: /confirm\('确定要从 V2EX 登出？'\)/,
   CAPTCHA_REG: /<input type="text" class="sl" name="(.*?)" value="" autocorrect="off" spellcheck="false" autocapitalize="off" placeholder="请输入上图中的验证码" \/>/,
@@ -26,7 +26,7 @@ module.exports = {
   USER_INFO_BOX_REG: /<div id="Main">[\n ]*?<div class="sep20"><\/div>[\n ]*?<div class="box">[\s\S]*?<\/div>[\n ]*?<div class="sep20"><\/div>/,
   USER_INFO_REG: /<table cellpadding="0" cellspacing="0" border="0" width="100%">[\s\S]*?<img .*?src="(.*?)" class="avatar"[\s\S]*?(<span><li class="fa fa-building"><\/li> &nbsp; <strong>.*?<\/strong>|[\s\S]*)[\s\S]*?<span class="gray">V2EX 第 ([0-9]*?) 号会员，加入于 (.*?)[<\n]([\s\S]*?)<\/span>/,
   POST_TITLE_REG: /<div class="header"><div class="fr"><a href="\/member\/(.*?)"><img .*?src="(.*?)" class="avatar" border="0" align="default"[^/>]*?\/><\/a><\/div>[\n ]*?<a href="\/">V2EX<\/a> <span class="chevron">&nbsp;›&nbsp;<\/span> <a href="\/go\/(.*?)">(.*?)<\/a>[\n ]*?<div class="sep10"><\/div>[\n ]*?<h1>([\s\S]*?)<\/h1>/,
-  POST_INFO_REG: /<a href="javascript:" onclick="upVoteTopic\((.*?)\);" class="vote"><li class="fa fa-chevron-up"><\/li>(.*?)<\/a> &nbsp;<a href="javascript:" onclick="downVoteTopic\((.*?)\);" class="vote"><li class="fa fa-chevron-down"><\/li><\/a><\/div> &nbsp; <small class="gray"><a href="\/member\/(.*?)">(.*?)<\/a> · (.*?) · (.*?) 次点击 &nbsp;/,
+  POST_INFO_REG: /<a href="javascript:" onclick="upVoteTopic\((.*?)\);" class="vote"><li class="fa fa-chevron-up"><\/li>(.*?)<\/a> &nbsp;<a href="javascript:" onclick="downVoteTopic\((.*?)\);" class="vote"><li class="fa fa-chevron-down"><\/li><\/a><\/div> &nbsp; <small class="gray">(.*?)<\/small>/,
   POST_CONTENT_REG: /<div class="topic_content">[\s\S]*?<div class="topic_buttons">/,
   POST_REPLY_REG: /<div id="r_([0-9]*?)"[\s\S]*?<td width="48" valign="top" align="center"><img .*?src="(.*?)" class="avatar"[\s\S]*?<span class="no">([0-9]*?)<\/span><\/div>[\n ]*?<div class="sep3"><\/div>[\n ]*?<strong><a href="\/member\/(.*?)"(.*?)<span class="ago" title="(.*?)">(.*?)<\/span>(.*?)[\n ]*?<div class="sep5"><\/div>[\n ]*?<div class="reply_content">([\s\S]*?)<\/div>[\n ]*?<\/td>/g,
   POST_REPLY_COUNT_REG: /<span class="gray">(.*?) 条回复 &nbsp;<strong class="snow">/,

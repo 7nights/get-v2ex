@@ -224,11 +224,16 @@ function matchPost(text) {
     } else {
       upCount = 0;
     }
+    const $small = info[4];
+    let author = $small.match(/<a href="\/member\/(.*?)">(.*?)<\/a>/);
+    if (!author) author = '';
+    else author = author[1];
+    let [,, time = '', clicks = ''] = $small.match(/(.*)· (.*?) · (.*?) 次点击 &nbsp;/);
     info = {
       t: info[1],
-      author: info[4],
-      time: info[6],
-      clicks: info[7],
+      author: author,
+      time: time,
+      clicks: clicks,
       upCount: upCount
     };
   } else {

@@ -7,6 +7,7 @@ const models = require('../models');
 const { p2a } = require('../lib/utils');
 const { CREATE_TOPIC_PROBLEM } = require('../configs/regs');
 const autoUpdate = require('../services/autoupdate');
+const pageService = require('../services/pageservice');
 
 exports.submitReply = function submitReply(req, res) {
   if (!req.body) return res.sendStatus(400);
@@ -200,7 +201,7 @@ function alterPostStatus(req, res, target, type, refreshPage = false, method = '
     if (refreshPage) {
       let post;
       try {
-        post = page.handleTopicContent(body);
+        post = pageService.getTopicDetail(body);
       } catch (ex) {
         console.error(ex);
         return res.json({error: {message: 'Server Error'}});
