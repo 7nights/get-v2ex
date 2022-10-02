@@ -183,8 +183,6 @@ function doLogin(request) {
             userField, passwordField, once: onceValue, captcha
           }));
 
-          console.log(res);
-
           request.get('https://www.v2ex.com/_captcha?once=' + onceValue)
             .pipe(fs.createWriteStream('./captcha.png'))
             .on('close', () => {
@@ -198,6 +196,9 @@ function doLogin(request) {
             type: 'NEED_REFRESH'
           });
         }
+      })
+      .on('error', (e) => {
+        console.error('[request error]signin|', e);
       });
   });
 }
