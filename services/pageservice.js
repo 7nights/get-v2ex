@@ -248,14 +248,14 @@ function matchPost(text) {
   let likes = extraInfo.match(/([0-9]*) 人感谢 &nbsp;/);
   let likeAction = extraInfo.match(/thankTopic\((.*?), '(.*?)'\);/);
   let ignoreAction = extraInfo.match(/'\/ignore\/topic\/(.*?)\?once=(.*?)';/);
-  let collectAction = extraInfo.match(/href="\/favorite\/topic\/(.*?)\?t=(.*?)"/);
+  let collectAction = extraInfo.match(/href="\/favorite\/topic\/(.*?)\?once=(.*?)"/);
   const liked = !likeAction;
   const muted = !ignoreAction;
   const collected = !collectAction;
   let once;
   let uncollectAction;
   if (collected) {
-    uncollectAction = extraInfo.match(/href="\/unfavorite\/topic\/.*?\?t=(.*?)"/);
+    uncollectAction = extraInfo.match(/href="\/unfavorite\/topic\/.*?\?once=(.*?)"/);
     if (uncollectAction) {
       uncollectAction = uncollectAction[1];
     } else {

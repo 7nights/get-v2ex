@@ -84,8 +84,9 @@ exports.savePost = ({topic, author, title, contentJSON, replyCount}) => {
 };
 exports.getTodayPosts = async (daysSinceUnixEpoch = exports.getDays()) => {
   // get posts list
+  console.log('try to get today posts:', daysSinceUnixEpoch);
   const list = await exports.getTodayList(daysSinceUnixEpoch);
-  if (!list || list.length === 0) return [];
+  if (!list || list.length === 0) return [[], daysSinceUnixEpoch, list];
 
   let query = SQL`SELECT * FROM today_post WHERE topic IN (`;
   list.forEach((id, i) => {
@@ -95,5 +96,5 @@ exports.getTodayPosts = async (daysSinceUnixEpoch = exports.getDays()) => {
   query.append(')');
 
   return database.all(query)
-    .then((ret) => [ret, daysSinceUnixEpoch]);
+    .then((ret) => [ret, daysSinceUnixEpoch, list]);
 };

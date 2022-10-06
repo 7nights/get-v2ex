@@ -185,7 +185,7 @@ exports.alterFollowing = async function alterFollowing(req, res) {
   res.json({ data: null, success: true});
 }
 
-function alterPostStatus(req, res, target, type, refreshPage = false, method = 'GET', tokenName = 't') {
+function alterPostStatus(req, res, target, type, refreshPage = false, method = 'GET', tokenName = 'once') {
   if (!req.query.t || !req.query.action) return res.json({error: {message: 'Invalid input'}});
 
   let t = normalizeTopic(req.query.t);

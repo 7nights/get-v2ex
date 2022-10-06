@@ -70,15 +70,20 @@ module.exports = async () => {
   taskQueue.onRun('auto-update', () => {
     autoUpdate.checkAndUpdate();
   });
-
   // fetch today list on every start-up
   taskQueue.schedualTask({
     taskId: 'fetch-today-list',
     next: Date.now()
   });
   taskQueue.onRun('fetch-today-list', async () => {
-    await todayService.getTodayList(void 0, true);
-    await todayService.fetchPendingTodayPosts();
+    try {
+      await todayService.getTodayList(void 0, true);
+      await todayService.fetchPendingTodayPosts();
+    } catch (ex) {
+      console.warn('fetch-today-list failed');
+      console.error(ex);
+      // ignore fetching error
+    }
 
     // repeat every 24 hours
     const d = new Date();

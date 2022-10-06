@@ -1,4 +1,5 @@
 const { fetchPage: getPageSource, getNotificationCount, getTodayList, getTopicDetail, PAGES } = require('../services/pageservice');
+const { fetchPendingTodayPosts } = require('../services/todayservice');
 const models = require('../models');
 
 const { GLOBAL_USER_INFO_REG, MAIN_POSTS_REG,
@@ -191,12 +192,18 @@ exports.node = (req, response) => {
 };
 
 exports.today = async (req, response) => {
-  let posts, days;
+  let posts, days, list;
   try {
-    [posts, days] = await models.getTodayPosts();
+    [posts, days, list] = await models.getTodayPosts();
     console.log(posts);
   } catch (ex) {
     return response.json({error: 'Failed to get popular today'});
+  }
+  if (posts.length < list.length) {
+    const postSet = new Set(posts.map(p => p.topic));
+    const pending = list.filter((id) => !postSet.has(id));
+    console.log('try to fetch unfetched posts:', list, posts.map(p => p.topic), pending);
+    fetchPendingTodayPosts(pending);
   }
   response.json({
     data: posts,

@@ -11,8 +11,10 @@ const kTopCommentsSize = 3;
 
 // try to update today list add put the result into the queue to be fetched later
 exports.fetchTodayList = async (days = models.getDays()) => {
+  console.log('try to fetch today list:', days);
   const res = await pageService.fetchPage(userRequests.get('default'), 'https://www.v2ex.com/');
   const list = pageService.getTodayList(res);
+  console.log('today list got', list);
   if (!list || list.length === 0) return console.warn('Could not fetch today list.', res);
 
   // add ids to fetchPending queue
@@ -36,8 +38,12 @@ exports.getTodayList = async (days = models.getDays(), addToFetchPending = false
 
 let fetchTimer = null;
 // before fetching posts we should add posts to fetchPending
-exports.fetchPendingTodayPosts = async () => {
+exports.fetchPendingTodayPosts = async (postsToBeAdded = []) => {
   if (fetchTimer) return true;
+  if (postsToBeAdded.length > 0) {
+    console.log('try to fetch today posts manually:', postsToBeAdded);
+    postsToBeAdded.forEach(id => fetchPending.add(id));
+  }
   if (fetchPending && fetchPending.size === 0) return false;
 
   fetchTimer = setTimeout(async () => {
