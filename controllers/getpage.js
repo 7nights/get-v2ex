@@ -194,7 +194,7 @@ exports.node = (req, response) => {
 exports.today = async (req, response) => {
   let posts, days, list;
   try {
-    [posts, days, list] = await models.getTodayPosts();
+    [posts, days, list] = await models.getTodayPosts(void 0, true);
     console.log(posts);
   } catch (ex) {
     return response.json({error: 'Failed to get popular today'});
@@ -207,7 +207,8 @@ exports.today = async (req, response) => {
   }
   response.json({
     data: posts,
-    days
+    days,
+    list
   });
 };
 
